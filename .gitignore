@@ -1,0 +1,33 @@
+# Dipendenze
+node_modules/
+dist/
+build/
+
+# Segreti - NON rimuovere
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+keys/
+certs/
+
+# Dati applicativi e personali
+*.db
+*.sqlite
+*.sqlite3
+*.xlsx
+*.xls
+*.csv
+backend/data/
+
+# Log e temporanei
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Impostazioni locali Claude Code
+.claude/settings.local.json

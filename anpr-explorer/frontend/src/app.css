@@ -1,0 +1,234 @@
+/* ── Custom utility layer — sopra bootstrap-italia ─────────────────────── */
+
+/* Interfaccia ingrandita: scala tutti i rem (font, spaziature, padding bootstrap) */
+html {
+  font-size: 18px;
+}
+
+/* Container più largo sugli schermi grandi, per sfruttare lo spazio extra */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1480px;
+  }
+}
+
+/* Campo etichetta + valore */
+.field-label {
+  font-size: 0.70rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #6c757d;
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+}
+.field-value {
+  font-size: 0.95rem;
+  color: #17324d;
+  font-weight: 500;
+  word-break: break-all;
+}
+.field-value.mono {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.875rem;
+}
+
+/* Intestazione sezione dentro una card */
+.section-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #0066cc;
+  margin-bottom: 0.875rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+/* Card risultato */
+.result-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  margin-top: 1.75rem;
+  overflow: hidden;
+}
+.result-card-header {
+  background: #f1f5fb;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.result-card-header .title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #17324d;
+  margin: 0;
+}
+.result-card-body {
+  padding: 1.25rem;
+}
+
+/* Card login */
+.login-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  overflow: hidden;
+}
+.login-card-header {
+  background: #0066cc;
+  color: #fff;
+  padding: 1.5rem 2rem 1.25rem;
+  text-align: center;
+}
+.login-card-body {
+  padding: 1.75rem 2rem 2rem;
+}
+
+/* Navigazione header */
+.nav-pill-tab {
+  display: inline-flex;
+  background: rgba(255,255,255,0.12);
+  border-radius: 100px;
+  padding: 3px;
+  gap: 2px;
+}
+.nav-pill-tab .tab-item {
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: all 0.15s;
+}
+.nav-pill-tab .tab-item.active {
+  background: #fff;
+  color: #0066cc;
+}
+
+/* Sezione cerca */
+.search-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+}
+
+/* Tabs tipo consultazione */
+.consult-tabs {
+  display: inline-flex;
+  border: 1px solid #0066cc;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.consult-tabs button {
+  border: none;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  background: #fff;
+  color: #0066cc;
+}
+.consult-tabs button + button {
+  border-left: 1px solid #0066cc;
+}
+.consult-tabs button.active {
+  background: #0066cc;
+  color: #fff;
+}
+
+/* Tabelle risultati */
+.data-table {
+  font-size: 0.85rem;
+}
+.data-table thead th {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6c757d;
+  border-bottom: 2px solid #dee2e6;
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+}
+.data-table tbody td {
+  padding: 0.55rem 0.75rem;
+  vertical-align: middle;
+  color: #17324d;
+}
+.data-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+/* Badge esito audit */
+.badge-ok {
+  background: #d4edda;
+  color: #155724;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25em 0.6em;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-err {
+  background: #f8d7da;
+  color: #721c24;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25em 0.6em;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Settings section card */
+.settings-section {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+.settings-section-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settings-section-header h3 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #17324d;
+  margin: 0;
+}
+.settings-section-body {
+  padding: 1.25rem;
+}
+
+/* Monospace CF */
+.cf-mono {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.925rem;
+  letter-spacing: 0.04em;
+}
