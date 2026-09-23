@@ -13,24 +13,55 @@ export default function Layout() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <header style={{ background: '#0066cc', borderBottom: '3px solid #004fa3' }} className="py-2">
-        <Container>
-          <div className="d-flex justify-content-between align-items-center">
+      <header
+        className="py-3"
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          background: 'linear-gradient(125deg, #003f87 0%, #0066cc 55%, #3aa0f5 100%)',
+          borderRadius: '0 0 28px 28px',
+          boxShadow: '0 18px 36px -22px rgba(0, 72, 150, 0.65)',
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            width: 220,
+            height: 220,
+            right: -70,
+            top: -130,
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.10)',
+            pointerEvents: 'none',
+          }}
+        />
+        <Container style={{ position: 'relative', zIndex: 1 }}>
+          <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div className="d-flex align-items-center gap-3">
-              <span className="text-white fw-bold" style={{ fontSize: '1rem', letterSpacing: '-0.01em' }}>
+              <span
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.18)',
+                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.35)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 'none',
+                }}
+              >
+                <span className="anpr-ms" style={{ fontSize: 22, color: '#fff' }}>account_balance</span>
+              </span>
+              <span className="text-white fw-bold" style={{ fontSize: '1.05rem', letterSpacing: '-0.01em' }}>
                 ANPR Explorer
               </span>
-              <nav className="d-flex align-items-center gap-1">
+              <nav className="nav-pill-tab ms-2">
                 <NavLink
                   to="/"
                   end
-                  className={({ isActive }) =>
-                    `text-white text-decoration-none px-3 py-2 rounded-1 ${isActive ? 'fw-bold' : ''}`
-                  }
-                  style={({ isActive }) => ({
-                    background: isActive ? 'rgba(255,255,255,0.18)' : 'transparent',
-                    fontSize: '0.875rem',
-                  })}
+                  className={({ isActive }) => `tab-item${isActive ? ' active' : ''}`}
                 >
                   Consultazione
                 </NavLink>
@@ -38,25 +69,13 @@ export default function Layout() {
                   <>
                     <NavLink
                       to="/log-audit"
-                      className={({ isActive }) =>
-                        `text-white text-decoration-none px-3 py-2 rounded-1 ${isActive ? 'fw-bold' : ''}`
-                      }
-                      style={({ isActive }) => ({
-                        background: isActive ? 'rgba(255,255,255,0.18)' : 'transparent',
-                        fontSize: '0.875rem',
-                      })}
+                      className={({ isActive }) => `tab-item${isActive ? ' active' : ''}`}
                     >
                       Log audit
                     </NavLink>
                     <NavLink
                       to="/impostazioni"
-                      className={({ isActive }) =>
-                        `text-white text-decoration-none px-3 py-2 rounded-1 ${isActive ? 'fw-bold' : ''}`
-                      }
-                      style={({ isActive }) => ({
-                        background: isActive ? 'rgba(255,255,255,0.18)' : 'transparent',
-                        fontSize: '0.875rem',
-                      })}
+                      className={({ isActive }) => `tab-item${isActive ? ' active' : ''}`}
                     >
                       Impostazioni
                     </NavLink>
@@ -65,31 +84,24 @@ export default function Layout() {
               </nav>
             </div>
 
-            <div className="d-flex align-items-center gap-3">
+            <div className="d-flex align-items-center gap-2">
               <div className="d-flex align-items-center gap-2">
-                <span className="text-white" style={{ fontSize: '0.8rem', opacity: 0.85 }}>
+                <span className="text-white" style={{ fontSize: '0.8rem', opacity: 0.9 }}>
                   {username}
                 </span>
-                <span
-                  style={{
-                    background: role === 'admin' ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.12)',
-                    color: '#fff',
-                    fontSize: '0.65rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    padding: '2px 7px',
-                    borderRadius: '100px',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                  }}
-                >
+                <span className={`anpr-pill anpr-pill--${role === 'admin' ? 'solid' : 'solid-soft'}`}>
                   {role === 'admin' ? 'Admin' : 'Viewer'}
                 </span>
               </div>
               <button
                 type="button"
                 className="btn btn-sm"
-                style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.35)', fontSize: '0.8rem' }}
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  color: '#fff',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  fontSize: '0.8rem',
+                }}
                 onClick={handleLogout}
               >
                 Esci
@@ -105,10 +117,8 @@ export default function Layout() {
         </Container>
       </main>
 
-      <footer style={{ background: '#f0f3f8', borderTop: '1px solid #dee2e6' }} className="py-3 text-center">
-        <small className="text-muted" style={{ fontSize: '0.75rem' }}>
-          ANPR Explorer — Ente Fruitore PDND &nbsp;·&nbsp; uso riservato agli operatori autorizzati
-        </small>
+      <footer className="py-4 anpr-footer">
+        <span>ANPR Explorer — Ente Fruitore PDND &nbsp;·&nbsp; uso riservato agli operatori autorizzati</span>
       </footer>
     </div>
   );

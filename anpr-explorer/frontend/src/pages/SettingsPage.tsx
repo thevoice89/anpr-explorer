@@ -173,13 +173,7 @@ export default function SettingsPage() {
   }
 
   const configBadge = view ? (
-    <span
-      style={{
-        background: view.configured ? '#d4edda' : '#fff3cd',
-        color: view.configured ? '#155724' : '#856404',
-        fontSize: '0.7rem', fontWeight: 700, padding: '3px 9px', borderRadius: '100px',
-      }}
-    >
+    <span className={`anpr-pill anpr-pill--${view.configured ? 'ok' : 'warn'}`}>
       {view.configured ? 'Configurato' : 'Da completare'}
     </span>
   ) : null;
@@ -187,18 +181,23 @@ export default function SettingsPage() {
   return (
     <div>
       {/* Intestazione pagina */}
-      <div className="mb-4">
-        <h2 className="mb-1" style={{ fontSize: '1.1rem', fontWeight: 700, color: '#17324d' }}>Impostazioni</h2>
-        <p className="text-muted mb-0" style={{ fontSize: '0.8rem' }}>Credenziali PDND, finalità e gestione operatori</p>
+      <div className="anpr-hero mb-4">
+        <span className="anpr-hero__icon">
+          <span className="anpr-ms">tune</span>
+        </span>
+        <div className="anpr-hero__text">
+          <div className="anpr-hero__title">Impostazioni</div>
+          <div className="anpr-hero__subtitle">Credenziali PDND, finalità e gestione operatori</div>
+        </div>
       </div>
 
       {error && (
-        <div className="mb-3 p-3 rounded" style={{ background: '#f8d7da', color: '#842029', border: '1px solid #f5c2c7', fontSize: '0.875rem' }}>
+        <div className="mb-3 p-3" style={{ background: '#fde8eb', color: '#a3223a', border: '1px solid #f5c2c7', fontSize: '0.875rem', borderRadius: 16 }}>
           {error}
         </div>
       )}
       {successMessage && (
-        <div className="mb-3 p-3 rounded" style={{ background: '#d4edda', color: '#155724', border: '1px solid #c3e6cb', fontSize: '0.875rem' }}>
+        <div className="mb-3 p-3" style={{ background: '#e3f6ec', color: '#0a7a4b', border: '1px solid #c3e6cb', fontSize: '0.875rem', borderRadius: 16 }}>
           {successMessage}
         </div>
       )}
@@ -352,9 +351,9 @@ export default function SettingsPage() {
         <div className="mb-4">
           <button
             type="submit"
-            className="btn"
+            className="btn anpr-btn-primary"
             disabled={loading}
-            style={{ background: '#0066cc', color: '#fff', fontWeight: 600, fontSize: '0.875rem', minWidth: 160 }}
+            style={{ fontSize: '0.875rem', minWidth: 160 }}
           >
             {loading ? (
               <span className="d-flex align-items-center gap-2">
@@ -369,7 +368,7 @@ export default function SettingsPage() {
       {/* ── Gestione utenti ──────────────────────────────────── */}
       <SectionCard title="Gestione utenti">
         {usersError && (
-          <div className="mb-3 p-2 rounded" style={{ background: '#f8d7da', color: '#842029', border: '1px solid #f5c2c7', fontSize: '0.85rem' }}>
+          <div className="mb-3 p-2" style={{ background: '#fde8eb', color: '#a3223a', border: '1px solid #f5c2c7', fontSize: '0.85rem', borderRadius: 14 }}>
             {usersError}
           </div>
         )}
@@ -467,9 +466,9 @@ export default function SettingsPage() {
               <div className="col-md-2">
                 <button
                   type="submit"
-                  className="btn w-100"
+                  className="btn anpr-btn-primary w-100"
                   disabled={userFormLoading}
-                  style={{ background: '#0066cc', color: '#fff', fontWeight: 600, fontSize: '0.875rem' }}
+                  style={{ fontSize: '0.875rem' }}
                 >
                   {userFormLoading ? '…' : 'Aggiungi'}
                 </button>

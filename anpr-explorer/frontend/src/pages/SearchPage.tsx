@@ -71,13 +71,16 @@ export default function SearchPage() {
 
   return (
     <Container>
-      <div className="mb-4">
-        <h2 className="mb-1" style={{ fontSize: '1.1rem', fontWeight: 700, color: '#17324d' }}>
-          Consultazione ANPR
-        </h2>
-        <p className="text-muted mb-0" style={{ fontSize: '0.8rem' }}>
-          Interrogazione in tempo reale dell'Anagrafe Nazionale della Popolazione Residente via PDND
-        </p>
+      <div className="anpr-hero mb-4">
+        <span className="anpr-hero__icon">
+          <span className="anpr-ms">travel_explore</span>
+        </span>
+        <div className="anpr-hero__text">
+          <div className="anpr-hero__title">Consultazione ANPR</div>
+          <div className="anpr-hero__subtitle">
+            Interrogazione in tempo reale dell'Anagrafe Nazionale della Popolazione Residente via PDND
+          </div>
+        </div>
       </div>
 
       <div className="search-card">
@@ -101,8 +104,8 @@ export default function SearchPage() {
 
         {error && (
           <div
-            className="mb-3 p-3 rounded"
-            style={{ background: '#f8d7da', color: '#842029', fontSize: '0.875rem', border: '1px solid #f5c2c7' }}
+            className="mb-3 p-3"
+            style={{ background: '#fde8eb', color: '#a3223a', fontSize: '0.875rem', border: '1px solid #f5c2c7', borderRadius: 16 }}
           >
             {error}
           </div>
@@ -153,9 +156,9 @@ export default function SearchPage() {
           <div className="d-flex gap-2">
             <button
               type="submit"
-              className="btn"
+              className="btn anpr-btn-primary"
               disabled={loading}
-              style={{ background: '#0066cc', color: '#fff', fontWeight: 600, fontSize: '0.875rem', minWidth: 100 }}
+              style={{ fontSize: '0.875rem', minWidth: 100 }}
             >
               {loading ? (
                 <span className="d-flex align-items-center gap-2">

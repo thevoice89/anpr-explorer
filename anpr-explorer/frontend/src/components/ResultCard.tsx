@@ -52,40 +52,8 @@ export default function ResultCard({ result }: ResultCardProps) {
           }}
         />
         <span className="title">Accertamento residenza</span>
-        {deceduto && (
-          <span
-            style={{
-              marginLeft: '0.5rem',
-              fontSize: '0.65rem',
-              fontWeight: 700,
-              color: '#fff',
-              background: '#dc3545',
-              borderRadius: 4,
-              padding: '1px 6px',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Deceduto
-          </span>
-        )}
-        {result.isAIRE && (
-          <span
-            style={{
-              marginLeft: '0.5rem',
-              fontSize: '0.65rem',
-              fontWeight: 700,
-              color: '#fff',
-              background: '#0066cc',
-              borderRadius: 4,
-              padding: '1px 6px',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
-          >
-            AIRE
-          </span>
-        )}
+        {deceduto && <span className="anpr-pill anpr-pill--err">Deceduto</span>}
+        {result.isAIRE && <span className="anpr-pill anpr-pill--info">AIRE</span>}
         <span
           style={{
             marginLeft: 'auto',
@@ -112,8 +80,8 @@ export default function ResultCard({ result }: ResultCardProps) {
             style={{
               background: '#dc3545',
               color: '#fff',
-              borderRadius: 6,
-              padding: '0.6rem 0.9rem',
+              borderRadius: 16,
+              padding: '0.7rem 1rem',
               fontSize: '0.85rem',
               fontWeight: 600,
             }}

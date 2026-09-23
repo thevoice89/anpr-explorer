@@ -28,16 +28,7 @@ export default function FamigliaCard({ result }: FamigliaCardProps) {
           }}
         />
         <span className="title">Stato di famiglia</span>
-        <span
-          style={{
-            background: '#e7f0fb',
-            color: '#0066cc',
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            padding: '2px 8px',
-            borderRadius: '100px',
-          }}
-        >
+        <span className="anpr-pill anpr-pill--info">
           {count} componente{count !== 1 ? 'i' : ''}
         </span>
         <span
@@ -88,33 +79,11 @@ export default function FamigliaCard({ result }: FamigliaCardProps) {
                     <td>{c.comuneNascita || '—'}</td>
                     <td>{c.sesso || '—'}</td>
                     <td>
-                      <span
-                        style={{
-                          background: '#f0f3f8',
-                          color: '#17324d',
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          padding: '2px 8px',
-                          borderRadius: '4px',
-                        }}
-                      >
-                        {c.legame || '—'}
-                      </span>
+                      <span className="anpr-pill anpr-pill--neutral">{c.legame || '—'}</span>
                     </td>
                     <td>
                       {c.deceduto ? (
-                        <span
-                          style={{
-                            background: '#dc3545',
-                            color: '#fff',
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            padding: '2px 8px',
-                            borderRadius: '4px',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.03em',
-                          }}
-                        >
+                        <span className="anpr-pill anpr-pill--err">
                           Deceduto {formatData(c.dataDecesso)}
                         </span>
                       ) : (

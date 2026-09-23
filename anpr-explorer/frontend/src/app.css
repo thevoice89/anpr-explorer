@@ -1,8 +1,33 @@
 /* ── Custom utility layer — sopra bootstrap-italia ─────────────────────── */
+/* Tema "soft": stessa identica linea grafica del progetto DURC — palette blu
+   di Bootstrap Italia (design-react-kit), angoli arrotondati, pulsanti a
+   pillola e font tondeggiante (Nunito). */
+
+:root {
+  --anpr-primary: #0066cc;
+  --anpr-primary-dark: #003f87;
+  --anpr-primary-light: #3aa0f5;
+  --anpr-ink: #1b2a3d;
+  --anpr-muted: #6b7a90;
+  --anpr-muted-2: #5b6b80;
+  --anpr-border: #e4ebf5;
+  --anpr-bg: #f4f7fb;
+  --anpr-bg-soft: #f2f6fc;
+}
 
 /* Interfaccia ingrandita: scala tutti i rem (font, spaziature, padding bootstrap) */
 html {
   font-size: 18px;
+}
+
+body {
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--anpr-ink);
+  background:
+    radial-gradient(1100px 520px at -5% -12%, rgba(0, 102, 204, 0.11), transparent 60%),
+    radial-gradient(900px 480px at 105% -8%, rgba(0, 166, 153, 0.08), transparent 55%),
+    var(--anpr-bg);
+  min-height: 100vh;
 }
 
 /* Container più largo sugli schermi grandi, per sfruttare lo spazio extra */
@@ -17,20 +42,193 @@ html {
   }
 }
 
+/* ---------- Icone (Material Symbols Rounded) ---------- */
+.anpr-ms {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  vertical-align: middle;
+}
+
+/* ---------- Testata "hero" (gradiente + cerchi decorativi) ---------- */
+.anpr-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 1.2rem;
+  padding: 1.7rem 1.9rem;
+  border-radius: 30px;
+  color: #fff;
+  background: linear-gradient(125deg, var(--anpr-primary-dark) 0%, var(--anpr-primary) 50%, var(--anpr-primary-light) 100%);
+  box-shadow: 0 24px 48px -26px rgba(0, 72, 150, 0.75);
+}
+.anpr-hero::before,
+.anpr-hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.anpr-hero::before {
+  width: 280px;
+  height: 280px;
+  right: -80px;
+  top: -140px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.anpr-hero::after {
+  width: 180px;
+  height: 180px;
+  right: 170px;
+  bottom: -120px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.anpr-hero > * {
+  position: relative;
+  z-index: 1;
+}
+.anpr-hero__icon {
+  width: 60px;
+  height: 60px;
+  flex: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+.anpr-hero__icon .anpr-ms {
+  font-size: 32px;
+}
+.anpr-hero__text {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+.anpr-hero__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.anpr-hero__subtitle {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+@media (max-width: 640px) {
+  .anpr-hero {
+    padding: 1.3rem 1.25rem;
+    border-radius: 24px;
+  }
+  .anpr-hero__title {
+    font-size: 1.2rem;
+  }
+}
+
+/* ---------- Pillola di stato / badge ---------- */
+.anpr-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.anpr-pill__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+.anpr-pill--ok { background: #e3f6ec; color: #0a7a4b; }
+.anpr-pill--warn { background: #fff1d6; color: #8a5a00; }
+.anpr-pill--err { background: #fde8eb; color: #a3223a; }
+.anpr-pill--info { background: #e8f1fc; color: #0066cc; }
+.anpr-pill--neutral { background: #eef2f7; color: #3d4a5c; }
+.anpr-pill--solid { background: rgba(255, 255, 255, 0.22); color: #fff; }
+.anpr-pill--solid-soft { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+/* ---------- Intestazioni di sezione con icona (dentro le card) ---------- */
+.anpr-section {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.7rem 0.85rem;
+  margin-bottom: 1.1rem;
+}
+.anpr-section__icon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--anpr-primary);
+  background: #e8f1fc;
+}
+.anpr-section__icon .anpr-ms {
+  font-size: 20px;
+}
+.anpr-section__text {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.anpr-section__title {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--anpr-ink);
+}
+.anpr-section__sub {
+  margin-top: 0.1rem;
+  font-size: 0.78rem;
+  color: var(--anpr-muted-2);
+}
+
+/* Vecchia intestazione di sezione (dentro le card, senza icona) — resa coerente */
+.section-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--anpr-primary);
+  margin-bottom: 0.875rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid #eef2f7;
+}
+
 /* Campo etichetta + valore */
 .field-label {
-  font-size: 0.70rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: #6c757d;
-  margin-bottom: 0.2rem;
+  letter-spacing: 0.06em;
+  color: var(--anpr-muted);
+  margin-bottom: 0.25rem;
   line-height: 1.2;
 }
 .field-value {
   font-size: 0.95rem;
-  color: #17324d;
-  font-weight: 500;
+  color: var(--anpr-ink);
+  font-weight: 600;
   word-break: break-all;
 }
 .field-value.mono {
@@ -38,119 +236,130 @@ html {
   font-size: 0.875rem;
 }
 
-/* Intestazione sezione dentro una card */
-.section-title {
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #0066cc;
-  margin-bottom: 0.875rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid #e9ecef;
-}
-
-/* Card risultato */
-.result-card {
+/* ---------- Card ("anpr-key card", angoli 26px, ombra soffusa) ---------- */
+.result-card,
+.search-card,
+.settings-section,
+.anpr-card {
   background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  margin-top: 1.75rem;
+  border: 1px solid var(--anpr-border);
+  border-radius: 26px;
+  box-shadow: 0 1px 2px rgba(16, 42, 84, 0.04), 0 18px 40px -26px rgba(16, 42, 84, 0.35);
   overflow: hidden;
 }
+.result-card {
+  margin-top: 1.75rem;
+}
 .result-card-header {
-  background: #f1f5fb;
-  border-bottom: 1px solid #dee2e6;
-  padding: 0.75rem 1.25rem;
+  background: var(--anpr-bg-soft);
+  border-bottom: 1px solid var(--anpr-border);
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   gap: 0.6rem;
 }
 .result-card-header .title {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #17324d;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--anpr-ink);
   margin: 0;
 }
 .result-card-body {
-  padding: 1.25rem;
+  padding: 1.6rem 1.7rem;
 }
 
 /* Card login */
 .login-card {
   background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  border: 1px solid var(--anpr-border);
+  border-radius: 28px;
+  box-shadow: 0 24px 48px -26px rgba(0, 72, 150, 0.4);
   overflow: hidden;
 }
 .login-card-header {
-  background: #0066cc;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(125deg, var(--anpr-primary-dark) 0%, var(--anpr-primary) 50%, var(--anpr-primary-light) 100%);
   color: #fff;
-  padding: 1.5rem 2rem 1.25rem;
+  padding: 2rem 2rem 1.5rem;
   text-align: center;
 }
+.login-card-header::before {
+  content: '';
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -70px;
+  top: -110px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+.login-card-header > * {
+  position: relative;
+  z-index: 1;
+}
 .login-card-body {
-  padding: 1.75rem 2rem 2rem;
+  padding: 1.9rem 2rem 2.1rem;
 }
 
-/* Navigazione header */
+/* Navigazione header (top navbar a pillole) */
 .nav-pill-tab {
   display: inline-flex;
-  background: rgba(255,255,255,0.12);
-  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
   padding: 3px;
   gap: 2px;
 }
 .nav-pill-tab .tab-item {
   padding: 0.3rem 0.9rem;
-  border-radius: 100px;
+  border-radius: 999px;
   font-size: 0.8rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.8);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
   border: none;
   background: transparent;
-  transition: all 0.15s;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.nav-pill-tab .tab-item:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 .nav-pill-tab .tab-item.active {
   background: #fff;
-  color: #0066cc;
+  color: var(--anpr-primary);
+  box-shadow: 0 6px 14px -6px rgba(0, 30, 70, 0.4);
 }
 
 /* Sezione cerca */
 .search-card {
-  background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
+  padding: 1.6rem 1.8rem;
 }
 
-/* Tabs tipo consultazione */
+/* Tabs tipo consultazione — pillola unica, coerente col resto */
 .consult-tabs {
   display: inline-flex;
-  border: 1px solid #0066cc;
-  border-radius: 4px;
-  overflow: hidden;
+  background: var(--anpr-bg-soft);
+  border-radius: 999px;
+  padding: 4px;
   margin-bottom: 1.5rem;
+  gap: 2px;
 }
 .consult-tabs button {
   border: none;
-  padding: 0.45rem 1.1rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
-  background: #fff;
-  color: #0066cc;
-}
-.consult-tabs button + button {
-  border-left: 1px solid #0066cc;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  background: transparent;
+  color: var(--anpr-muted-2);
+  border-radius: 999px;
 }
 .consult-tabs button.active {
-  background: #0066cc;
+  background: linear-gradient(135deg, var(--anpr-primary) 0%, #2e8bef 100%);
   color: #fff;
+  box-shadow: 0 10px 20px -12px rgba(0, 102, 204, 0.85);
 }
 
 /* Tabelle risultati */
@@ -158,72 +367,68 @@ html {
   font-size: 0.85rem;
 }
 .data-table thead th {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #6c757d;
-  border-bottom: 2px solid #dee2e6;
-  padding: 0.5rem 0.75rem;
+  color: var(--anpr-muted);
+  border-bottom: 2px solid #eef2f7;
+  padding: 0.6rem 0.8rem;
   white-space: nowrap;
 }
 .data-table tbody td {
-  padding: 0.55rem 0.75rem;
+  padding: 0.65rem 0.8rem;
   vertical-align: middle;
-  color: #17324d;
+  color: var(--anpr-ink);
+}
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f3f8;
 }
 .data-table tbody tr:hover {
-  background: #f8f9fa;
+  background: #f8fafd;
 }
 
-/* Badge esito audit */
-.badge-ok {
-  background: #d4edda;
-  color: #155724;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.25em 0.6em;
-  border-radius: 4px;
+/* Badge esito audit — pillole */
+.badge-ok,
+.badge-err {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.3em 0.75em;
+  border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+.badge-ok {
+  background: #e3f6ec;
+  color: #0a7a4b;
+}
 .badge-err {
-  background: #f8d7da;
-  color: #721c24;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.25em 0.6em;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  background: #fde8eb;
+  color: #a3223a;
 }
 
 /* Settings section card */
 .settings-section {
-  background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  margin-bottom: 2rem;
-  overflow: hidden;
+  margin-bottom: 1.75rem;
 }
 .settings-section-header {
-  background: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
-  padding: 0.875rem 1.25rem;
+  background: var(--anpr-bg-soft);
+  border-bottom: 1px solid var(--anpr-border);
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .settings-section-header h3 {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #17324d;
+  letter-spacing: 0.07em;
+  color: var(--anpr-ink);
   margin: 0;
 }
 .settings-section-body {
-  padding: 1.25rem;
+  padding: 1.6rem 1.7rem;
 }
 
 /* Monospace CF */
@@ -231,4 +436,79 @@ html {
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.925rem;
   letter-spacing: 0.04em;
+}
+
+/* ---------- Piè di pagina — pillola col bordo, come DURC ---------- */
+.anpr-footer {
+  text-align: center;
+}
+.anpr-footer span {
+  display: inline-block;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--anpr-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 0.75rem;
+  color: var(--anpr-muted);
+}
+
+/* ---------- Widget bootstrap-italia: input, select, textarea arrotondati ---------- */
+.form-control,
+.form-select,
+textarea.form-control {
+  border-radius: 0.9rem;
+  border-color: #dce5f0;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--anpr-primary);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.15);
+}
+#codiceFiscale.form-control,
+.st-key-single_cf_input {
+  border-radius: 999px;
+}
+
+/* ---------- Pulsanti — gradiente + pillola, come DURC ---------- */
+.btn {
+  border-radius: 999px !important;
+  font-weight: 700;
+}
+.btn.anpr-btn-primary {
+  background: linear-gradient(135deg, var(--anpr-primary) 0%, #2e8bef 100%);
+  border: 0;
+  color: #fff;
+  box-shadow: 0 10px 20px -12px rgba(0, 102, 204, 0.85);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.btn.anpr-btn-primary:not(:disabled):hover {
+  filter: brightness(1.06);
+  box-shadow: 0 14px 24px -12px rgba(0, 102, 204, 0.9);
+}
+.btn.anpr-btn-primary:disabled {
+  background: #e6ecf4;
+  color: #97a5b8;
+  box-shadow: none;
+}
+.btn:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+.btn:disabled {
+  opacity: 0.7;
+}
+.btn-outline-secondary {
+  border-radius: 999px;
+  border-color: var(--anpr-border);
+  color: var(--anpr-muted-2);
+  font-weight: 700;
+  background: #fff;
+}
+.btn-outline-secondary:hover {
+  border-color: var(--anpr-primary);
+  color: var(--anpr-primary);
+  background: #f2f7fd;
+}
+.btn-outline-danger {
+  border-radius: 999px;
+  font-weight: 700;
 }

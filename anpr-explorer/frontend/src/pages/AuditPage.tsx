@@ -30,36 +30,24 @@ export default function AuditPage() {
   return (
     <div>
       {/* Intestazione */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h2 className="mb-1" style={{ fontSize: '1.1rem', fontWeight: 700, color: '#17324d' }}>
-            Log audit
-          </h2>
-          <p className="text-muted mb-0" style={{ fontSize: '0.8rem' }}>
-            Tutte le operazioni degli operatori, ordinate dalla più recente
-          </p>
+      <div className="anpr-hero mb-4">
+        <span className="anpr-hero__icon">
+          <span className="anpr-ms">history</span>
+        </span>
+        <div className="anpr-hero__text">
+          <div className="anpr-hero__title">Log audit</div>
+          <div className="anpr-hero__subtitle">Tutte le operazioni degli operatori, ordinate dalla più recente</div>
         </div>
-        <div
-          style={{
-            background: '#e7f0fb',
-            color: '#0066cc',
-            fontWeight: 700,
-            fontSize: '0.8rem',
-            padding: '0.4rem 1rem',
-            borderRadius: '100px',
-          }}
-        >
-          {total.toLocaleString('it-IT')} operazioni
-        </div>
+        <span className="anpr-pill anpr-pill--solid">{total.toLocaleString('it-IT')} operazioni</span>
       </div>
 
       {error && (
-        <div className="p-3 mb-4 rounded" style={{ background: '#f8d7da', color: '#842029', border: '1px solid #f5c2c7', fontSize: '0.875rem' }}>
+        <div className="p-3 mb-4" style={{ background: '#fde8eb', color: '#a3223a', border: '1px solid #f5c2c7', fontSize: '0.875rem', borderRadius: 16 }}>
           {error}
         </div>
       )}
 
-      <div style={{ background: '#fff', border: '1px solid #dee2e6', borderRadius: 6, overflow: 'hidden' }}>
+      <div className="anpr-card">
         {loading ? (
           <div className="text-center py-5 text-muted" style={{ fontSize: '0.875rem' }}>
             <span className="spinner-border spinner-border-sm me-2" role="status" />
@@ -68,7 +56,7 @@ export default function AuditPage() {
         ) : (
           <div className="table-responsive">
             <table className="data-table w-100" style={{ borderCollapse: 'collapse' }}>
-              <thead style={{ background: '#f8f9fa', borderBottom: '2px solid #dee2e6' }}>
+              <thead style={{ background: '#f2f6fc', borderBottom: '2px solid #eef2f7' }}>
                 <tr>
                   <th>Timestamp</th>
                   <th>Operatore</th>
@@ -94,9 +82,7 @@ export default function AuditPage() {
                     </td>
                     <td style={{ fontWeight: 600 }}>{r.operatore}</td>
                     <td>
-                      <span style={{ background: '#f0f3f8', color: '#17324d', fontSize: '0.75rem', fontWeight: 600, padding: '2px 7px', borderRadius: 4 }}>
-                        {r.servizio}
-                      </span>
+                      <span className="anpr-pill anpr-pill--neutral">{r.servizio}</span>
                     </td>
                     <td style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {r.motivazione ?? <span className="text-muted">—</span>}
@@ -117,7 +103,7 @@ export default function AuditPage() {
 
         {totalPages > 1 && (
           <div
-            style={{ borderTop: '1px solid #dee2e6', padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#fafafa' }}
+            style={{ borderTop: '1px solid #eef2f7', padding: '0.9rem 1.3rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f9fbfd' }}
           >
             <button
               className="btn btn-sm btn-outline-secondary"

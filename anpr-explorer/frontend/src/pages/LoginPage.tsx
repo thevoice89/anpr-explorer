@@ -24,27 +24,24 @@ export default function LoginPage() {
   }
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center min-vh-100"
-      style={{ background: '#f0f3f8' }}
-    >
+    <div className="d-flex justify-content-center align-items-center min-vh-100">
       <div style={{ width: '100%', maxWidth: 400 }}>
         <div className="login-card">
           <div className="login-card-header">
             <div
               style={{
-                width: 44,
-                height: 44,
-                background: 'rgba(255,255,255,0.2)',
+                width: 52,
+                height: 52,
+                background: 'rgba(255,255,255,0.18)',
+                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.35)',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 0.75rem',
-                fontSize: '1.4rem',
               }}
             >
-              🏛️
+              <span className="anpr-ms" style={{ fontSize: 28 }}>account_balance</span>
             </div>
             <div style={{ fontSize: '1.05rem', fontWeight: 700, lineHeight: 1.2 }}>
               ANPR Explorer
@@ -57,12 +54,13 @@ export default function LoginPage() {
           <div className="login-card-body">
             {error && (
               <div
-                className="mb-3 p-2 rounded"
+                className="mb-3 p-2"
                 style={{
-                  background: '#f8d7da',
-                  color: '#842029',
+                  background: '#fde8eb',
+                  color: '#a3223a',
                   fontSize: '0.875rem',
                   border: '1px solid #f5c2c7',
+                  borderRadius: 14,
                 }}
               >
                 {error}
@@ -103,9 +101,9 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="btn w-100"
+                className="btn anpr-btn-primary w-100"
                 disabled={loading}
-                style={{ background: '#0066cc', color: '#fff', fontWeight: 600, fontSize: '0.9rem', padding: '0.5rem' }}
+                style={{ fontSize: '0.9rem', padding: '0.55rem' }}
               >
                 {loading ? 'Accesso in corso…' : 'Accedi'}
               </button>
