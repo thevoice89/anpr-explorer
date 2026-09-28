@@ -39,12 +39,11 @@ export default function SearchPage() {
     setError(null);
   }
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
+  async function cerca(tipo: Modalita, cf: string) {
     setError(null);
     setResult(null);
 
-    if (!CF_REGEX.test(codiceFiscale)) {
+    if (!CF_REGEX.test(cf)) {
       setError('Il codice fiscale deve essere di 16 caratteri alfanumerici');
       return;
     }
@@ -55,11 +54,11 @@ export default function SearchPage() {
 
     setLoading(true);
     try {
-      if (modalita === 'residenza') {
-        const data = await consultaResidenza({ codiceFiscale, motivazione });
+      if (tipo === 'residenza') {
+        const data = await consultaResidenza({ codiceFiscale: cf, motivazione });
         setResult({ modalita: 'residenza', data });
       } else {
-        const data = await consultaStatoFamiglia({ codiceFiscale, motivazione });
+        const data = await consultaStatoFamiglia({ codiceFiscale: cf, motivazione });
         setResult({ modalita: 'famiglia', data });
       }
     } catch (err) {
@@ -67,6 +66,18 @@ export default function SearchPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    void cerca(modalita, codiceFiscale);
+  }
+
+  /** Dal nucleo di un deceduto: stato di famiglia attuale di un componente, stessa motivazione. */
+  function consultaComponente(cf: string) {
+    setCodiceFiscale(cf);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    void cerca('famiglia', cf);
   }
 
   return (
@@ -180,7 +191,9 @@ export default function SearchPage() {
       </div>
 
       {result?.modalita === 'residenza' && <ResultCard result={result.data} />}
-      {result?.modalita === 'famiglia' && <FamigliaCard result={result.data} />}
+      {result?.modalita === 'famiglia' && (
+        <FamigliaCard result={result.data} onConsultaComponente={consultaComponente} />
+      )}
     </Container>
   );
 }

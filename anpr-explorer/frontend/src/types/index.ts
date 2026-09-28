@@ -58,7 +58,11 @@ export interface ComponenteFamiglia {
 export interface StatoFamigliaResponse {
   idANPR: string;
   codiceFiscale: string;
+  /** Data (YYYY-MM-DD) a cui si riferisce la composizione del nucleo. */
+  dataRiferimento: string;
   componenti: ComponenteFamiglia[];
+  /** Presente se il soggetto è deceduto: `componenti` è allora il nucleo al giorno prima del decesso. */
+  decesso: { dataDecesso: string; erroreNucleoStorico: string | null } | null;
 }
 
 export interface ResidenzaStorica {

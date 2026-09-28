@@ -156,9 +156,18 @@ interface DatiRichiestaE002 {
   casoUso: string;
 }
 
-function buildDatiRichiesta(serviceCode: AnprServiceCode, motivazione: string): DatiRichiestaE002 {
+/**
+ * `dataRiferimento` (YYYY-MM-DD) è la data a cui ANPR riferisce la scheda anagrafica:
+ * di default oggi, ma può essere una data passata per accertamenti di tipo storico
+ * (documentazione Sogei C021, 20/12/2024).
+ */
+function buildDatiRichiesta(
+  serviceCode: AnprServiceCode,
+  motivazione: string,
+  dataRiferimento: string = new Date().toISOString().slice(0, 10)
+): DatiRichiestaE002 {
   return {
-    dataRiferimentoRichiesta: new Date().toISOString().slice(0, 10),
+    dataRiferimentoRichiesta: dataRiferimento,
     motivoRichiesta: motivazione,
     casoUso: serviceCode,
   };
@@ -216,10 +225,14 @@ interface E002Soggetto {
   // {chiave: "Data decesso", id: "1015", valoreData: "YYYY-MM-DD"} — non esiste
   // un campo dedicato "deceduto"/"dataDecesso" nello schema.
   infoSoggettoEnte?: Array<{ chiave?: string; id?: string; valoreData?: string; valoreTesto?: string }>;
+  // Blocco dedicato previsto dallo schema E002 (TipoDatiEvento): non osservato su C020,
+  // ma dichiarato nello YAML — letto come alternativa a infoSoggettoEnte.
+  datiDecesso?: { dataEvento?: string };
 }
 
-/** Estrae la data di decesso dal blocco generico infoSoggettoEnte, se presente. */
+/** Estrae la data di decesso (blocco datiDecesso o voce "Data decesso" di infoSoggettoEnte). */
 function estraiDataDecesso(soggetto?: E002Soggetto): string | null {
+  if (soggetto?.datiDecesso?.dataEvento) return soggetto.datiDecesso.dataEvento;
   const voce = soggetto?.infoSoggettoEnte?.find((v) => /decesso/i.test(v.chiave ?? ''));
   return voce?.valoreData ?? null;
 }
@@ -426,60 +439,66 @@ export async function consultaResidenza(
   };
 }
 
-// Decodifica legame ANPR (tabella 3.4 delle specifiche tecniche ANPR).
-// Inclusi i valori zero-padded ("02", "03" ...) che ANPR può restituire in codiceLegame.
-const LEGAME_LABELS: Record<string, string> = {
-  '1':  'Intestatario',
-  '01': 'Intestatario',
-  '2':  'Coniuge / Unito civile',
-  '02': 'Coniuge / Unito civile',
-  '3':  'Figlio/a',
-  '03': 'Figlio/a',
-  '4':  'Genitore',
-  '04': 'Genitore',
-  '5':  'Fratello/Sorella',
-  '05': 'Fratello/Sorella',
-  '6':  'Altro parente',
-  '06': 'Altro parente',
-  '7':  'Affine',
-  '07': 'Affine',
-  '8':  'Convivente',
-  '08': 'Convivente',
-  '10': 'Intestatario',
+// Tabella 05 "Relazione di parentela - Famiglia" (docs.italia.it, ANPR, fonte Istat),
+// usata quando tipoLegame è 3 (famiglia residente) o 5 (famiglia AIRE).
+// NB: 2 = coniuge, l'unione civile ha un codice proprio (28).
+const RELAZIONE_PARENTELA: Record<string, string> = {
+  '1': 'Intestatario scheda',
+  '2': 'Marito / Moglie',
+  '3': 'Figlio / Figlia',
+  '4': 'Nipote (discendente)',
+  '5': 'Pronipote (discendente)',
+  '6': 'Padre / Madre',
+  '7': 'Nonno / Nonna',
+  '8': 'Bisnonno / Bisnonna',
+  '9': 'Fratello / Sorella',
+  '10': 'Nipote (collaterale)',
+  '11': 'Zio / Zia (collaterale)',
+  '12': 'Cugino / Cugina',
+  '13': 'Altro parente',
+  '14': 'Figliastro / Figliastra',
+  '15': 'Patrigno / Matrigna',
+  '16': 'Genero / Nuora',
+  '17': 'Suocero / Suocera',
+  '18': 'Cognato / Cognata',
+  '19': 'Fratellastro / Sorellastra',
+  '20': 'Nipote (affine)',
+  '21': 'Zio / Zia (affine)',
+  '22': 'Altro affine',
+  '23': 'Convivente (vincoli di adozione o affettivi)',
+  '24': 'Responsabile della convivenza non affettiva',
+  '25': 'Convivente in convivenza non affettiva',
+  '26': 'Tutore',
+  '28': 'Unito civilmente',
+  '80': 'Adottato',
+  '81': 'Nipote',
+  '99': 'Non definito',
 };
 
-// tipoLegame può contenere il tipo di nucleo (es. "3" = nucleo con figli) anziché il
-// legame individuale: in quel caso il valore utile è codiceLegame. Si prova entrambi.
-function decodeLegame(tipoLegame?: string, codiceLegame?: string): string {
-  // eslint-disable-next-line no-console
-  console.error('[DEBUG LEGAME] tipoLegame:', tipoLegame, '| codiceLegame:', codiceLegame);
-  if (codiceLegame && LEGAME_LABELS[codiceLegame]) return LEGAME_LABELS[codiceLegame];
-  if (tipoLegame && LEGAME_LABELS[tipoLegame]) return LEGAME_LABELS[tipoLegame];
-  return [tipoLegame, codiceLegame].filter(Boolean).join('/') || '';
-}
+// Tabella 06 "Legame - Convivenza", usata quando tipoLegame è 4 (convivenza anagrafica:
+// casa di cura, caserma, casa di pena...).
+const LEGAME_CONVIVENZA: Record<string, string> = {
+  '1': 'Responsabile convivenza',
+  '2': 'Membro della convivenza',
+  '3': 'Altro',
+  '9': 'Ignoto',
+};
 
 /**
- * C021: accertamento stato di famiglia — risolve prima l'ID ANPR (C030), poi
- * richiede il nucleo familiare. Restituisce tutti i componenti con generalità
- * e legame familiare.
+ * tipoLegame indica il tipo di nucleo (3 famiglia, 4 convivenza, 5 famiglia AIRE),
+ * codiceLegame la relazione del componente rispetto all'intestatario della scheda.
  */
-export async function consultaStatoFamiglia(
-  codiceFiscale: string,
-  motivazione: string,
-  operatore: string
-): Promise<StatoFamigliaResponse> {
-  const idAnpr = await resolveIdAnpr(codiceFiscale, motivazione, operatore);
+function decodeLegame(tipoLegame?: string, codiceLegame?: string): string {
+  if (!codiceLegame) return '';
+  // ANPR può restituire i codici zero-padded ("02").
+  const codice = codiceLegame.replace(/^0+(?=\d)/, '');
+  const tabella = tipoLegame === '4' ? LEGAME_CONVIVENZA : RELAZIONE_PARENTELA;
+  return tabella[codice] ?? `Codice ${codiceLegame}`;
+}
 
-  const body = {
-    idOperazioneClient: buildIdOperazioneClient(),
-    criteriRicerca: { idANPR: idAnpr },
-    datiRichiesta: buildDatiRichiesta('C021', motivazione),
-  };
-
-  const result = await callE002('C021', body, operatore);
-  const soggetti = result.listaSoggetti?.datiSoggetto ?? [];
-
-  const componenti: ComponenteFamiglia[] = soggetti.map((s) => ({
+function mapComponente(s: E002Soggetto): ComponenteFamiglia {
+  const dataDecesso = estraiDataDecesso(s);
+  return {
     codiceFiscale: s.generalita?.codiceFiscale?.codFiscale ?? s.identificativi?.codiceFiscale ?? '',
     idANPR: s.identificativi?.idANPR ?? '',
     cognome: s.generalita?.cognome ?? '',
@@ -488,11 +507,95 @@ export async function consultaStatoFamiglia(
     sesso: s.generalita?.sesso ?? null,
     comuneNascita: formatComune(s.generalita?.luogoNascita?.comune ?? s.generalita?.comuneNascita),
     legame: decodeLegame(s.legameSoggetto?.tipoLegame, s.legameSoggetto?.codiceLegame),
-    deceduto: !!estraiDataDecesso(s),
-    dataDecesso: estraiDataDecesso(s),
-  }));
+    deceduto: !!dataDecesso,
+    dataDecesso,
+  };
+}
 
-  return { idANPR: idAnpr, codiceFiscale, componenti };
+async function richiediStatoFamiglia(
+  idAnpr: string,
+  motivazione: string,
+  operatore: string,
+  dataRiferimento?: string
+): Promise<E002Soggetto[]> {
+  const body = {
+    idOperazioneClient: buildIdOperazioneClient(),
+    criteriRicerca: { idANPR: idAnpr },
+    datiRichiesta: buildDatiRichiesta('C021', motivazione, dataRiferimento),
+  };
+  const result = await callE002('C021', body, operatore);
+  return result.listaSoggetti?.datiSoggetto ?? [];
+}
+
+/** Giorno precedente a una data YYYY-MM-DD, in YYYY-MM-DD. */
+function giornoPrecedente(data: string): string {
+  const d = new Date(`${data}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * C021: accertamento stato di famiglia — risolve prima l'ID ANPR (C030), poi
+ * richiede il nucleo familiare. Restituisce tutti i componenti con generalità
+ * e legame familiare.
+ *
+ * Se il soggetto risulta deceduto, ANPR restituisce solo le sue generalità e la
+ * data di decesso, senza il resto del nucleo. In quel caso si ripete la C021 alla
+ * data del giorno precedente il decesso, così da mostrare chi faceva parte della
+ * famiglia (coniuge, figli...) al momento del decesso.
+ */
+export async function consultaStatoFamiglia(
+  codiceFiscale: string,
+  motivazione: string,
+  operatore: string
+): Promise<StatoFamigliaResponse> {
+  const idAnpr = await resolveIdAnpr(codiceFiscale, motivazione, operatore);
+  const oggi = new Date().toISOString().slice(0, 10);
+
+  const soggetti = await richiediStatoFamiglia(idAnpr, motivazione, operatore);
+  const principale =
+    soggetti.find((s) => s.identificativi?.idANPR === idAnpr) ?? (soggetti.length === 1 ? soggetti[0] : undefined);
+  const dataDecesso = estraiDataDecesso(principale);
+
+  if (!principale || !dataDecesso) {
+    return {
+      idANPR: idAnpr,
+      codiceFiscale,
+      dataRiferimento: oggi,
+      componenti: soggetti.map(mapComponente),
+      decesso: null,
+    };
+  }
+
+  const deceduto = mapComponente(principale);
+  const dataRiferimento = giornoPrecedente(dataDecesso);
+  try {
+    const nucleo = await richiediStatoFamiglia(idAnpr, motivazione, operatore, dataRiferimento);
+    // Alla data storica il soggetto era in vita: lo si marca deceduto con il dato attuale.
+    const componenti = nucleo.map((s) =>
+      s.identificativi?.idANPR === idAnpr ? { ...mapComponente(s), deceduto: true, dataDecesso } : mapComponente(s)
+    );
+    return {
+      idANPR: idAnpr,
+      codiceFiscale,
+      dataRiferimento,
+      componenti: componenti.length > 0 ? componenti : [deceduto],
+      decesso: { dataDecesso, erroreNucleoStorico: null },
+    };
+  } catch (err) {
+    // Il nucleo storico è un'integrazione: se ANPR lo rifiuta si mostra comunque il
+    // dato attuale (solo il deceduto) segnalando il motivo.
+    return {
+      idANPR: idAnpr,
+      codiceFiscale,
+      dataRiferimento: oggi,
+      componenti: [deceduto],
+      decesso: {
+        dataDecesso,
+        erroreNucleoStorico: err instanceof Error ? err.message : 'errore sconosciuto',
+      },
+    };
+  }
 }
 
 /** Compone una stringa indirizzo leggibile dai campi strutturati restituiti da ANPR. */

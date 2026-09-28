@@ -75,7 +75,8 @@ router.post('/stato-famiglia', async (req, res, next) => {
     log({
       operatore,
       servizio: 'C021',
-      modalita: 'stato-famiglia',
+      // Per un deceduto è stata fatta anche la C021 storica al giorno prima del decesso.
+      modalita: result.decesso ? 'stato-famiglia-decesso' : 'stato-famiglia',
       motivazione,
       esito: 'OK',
       dettaglioErrore: null,
