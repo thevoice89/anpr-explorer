@@ -95,27 +95,22 @@ docker compose up --build
 - Frontend: `http://localhost:5173`
 - Backend: `http://localhost:4000`
 
-## Deploy (ambiente di sviluppo condiviso)
-
-Istanza di sviluppo attiva su `service@192.168.2.22`:
-
-- Frontend: `http://192.168.2.22:5173`
-- Backend: `http://192.168.2.22:4000`
+## Deploy su un server
 
 Il deploy usa lo stesso `docker-compose.yml`, con un file `.env` **a livello di root** (accanto a `docker-compose.yml`, distinto da `backend/.env`) che valorizza gli URL per l'accesso via LAN:
 
 ```bash
 # anpr-explorer/.env (solo sull'host di deploy, non committato)
-CORS_ORIGIN=http://192.168.2.22:5173
-VITE_API_BASE_URL=http://192.168.2.22:4000/api
+CORS_ORIGIN=http://IP_DEL_SERVER:5173
+VITE_API_BASE_URL=http://IP_DEL_SERVER:4000/api
 ```
 
 Per ridistribuire dopo modifiche al codice:
 
 ```bash
 tar -czf - --exclude=node_modules --exclude=dist --exclude=backend/data --exclude=backend/keys --exclude=.git anpr-explorer \
-  | ssh service@192.168.2.22 'tar -xzf - -C ~/anpr-explorer --strip-components=1'
-ssh service@192.168.2.22 'cd ~/anpr-explorer && docker compose up -d --build'
+  | ssh utente@IP_DEL_SERVER 'tar -xzf - -C ~/anpr-explorer --strip-components=1'
+ssh utente@IP_DEL_SERVER 'cd ~/anpr-explorer && docker compose up -d --build'
 ```
 
 > ⚠️ **Trappola Docker Compose con `ADMIN_PASSWORD_HASH`**: gli hash argon2id contengono `$` (es. `$argon2id$v=19$...`). Compose applica l'**interpolazione delle variabili anche ai file referenziati da `env_file:`**, quindi `$argon2id`, `$v`, `$m` ecc. vengono silenziosamente sostituiti con stringa vuota se non escapati, **corrompendo l'hash senza errori visibili** (solo un warning "variable is not set"). In `backend/.env` ogni `$` letterale va raddoppiato: `$$argon2id$$v=19$$m=65536,t=3,p=4$$...`. Verifica sempre con `docker exec <container> printenv ADMIN_PASSWORD_HASH` dopo il deploy che l'hash coincida con quello generato, altrimenti il login admin fallisce silenziosamente.
