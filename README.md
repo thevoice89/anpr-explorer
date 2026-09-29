@@ -128,13 +128,19 @@ Per ciascuna:
 | `kid` | Client → Chiavi pubbliche | | |
 | Chiave privata | Il tuo `private.pem` | | |
 | `purposeId` (uno per C030, C020, C021) | Dettaglio di ogni finalità | | |
-| Token endpoint | Istruzioni voucher nel back-office | `https://auth.uat.interop.pagopa.it/token.oauth2` | `https://auth.interop.pagopa.it/token.oauth2` |
-| Audience della client assertion | Istruzioni voucher nel back-office | `auth.uat.interop.pagopa.it/client-assertion` | `auth.interop.pagopa.it/client-assertion` |
+| Token endpoint | Pagina del client nel back-office | `https://auth.uat.interop.pagopa.it/token.oauth2` | `https://auth.interop.pagopa.it/token.oauth2` |
+| Audience della client assertion | Pagina del client nel back-office | `auth.uat.interop.pagopa.it/client-assertion` | `auth.interop.pagopa.it/client-assertion` |
 | Base URL ANPR (solo prefisso, senza slash finale) | Scheda e-service → *Server URL* | `https://modipa-val.anpr.interno.it/govway/rest/in/MinInternoPortaANPR-PDND` | `https://modipa.anpr.interno.it/govway/rest/in/MinInternoPortaANPR-PDND` |
 | Codice IPA dell'ente | IndicePA (es. `c_xxxx`) | | |
 
 I valori degli endpoint sono quelli verificati al momento della scrittura. **Ricontrollali
 sempre nel back-office e nella scheda dell'e-service**, perché possono cambiare nel tempo.
+
+> **Suggerimento:** nella pagina di ogni client il back-office ha il pulsante **«Simula
+> l'ottenimento del voucher»**. Prova l'intera catena (client assertion → voucher) senza
+> scrivere codice e porta allo strumento **«Debug client assertion»**, che restituisce un
+> esito dettagliato. È il modo più rapido per verificare `client_id`, `kid` e chiave prima
+> di configurare l'app.
 Il codice IPA finisce nell'header di tracciamento richiesto da ANPR (`userLocation`, al
 massimo 20 caratteri).
 
