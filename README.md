@@ -30,6 +30,46 @@ l'integrazione con la PDND e con i pattern di sicurezza ModI richiesti da ANPR.
 - **Collaudo e produzione.** Si passa da un ambiente all'altro cambiando le impostazioni,
   senza toccare il codice.
 
+## Schermate
+
+Le schermate usano soggetti fittizi (cognome «PROVA») e un ambiente PDND/ANPR simulato:
+nessun dato reale.
+
+**Accertamento residenza.** Dati anagrafici, residenza attuale e storico delle residenze.
+
+![Accertamento residenza](docs/screenshots/residenza.png)
+
+**Stato di famiglia.** Composizione del nucleo e legame di ciascun componente con
+l'intestatario della scheda.
+
+![Stato di famiglia](docs/screenshots/stato-famiglia.png)
+
+**Stato di famiglia di un deceduto.** ANPR non restituisce il nucleo di una persona deceduta:
+l'app mostra la famiglia al giorno precedente il decesso e permette di aprire lo stato di
+famiglia attuale dei superstiti.
+
+![Stato di famiglia di un deceduto](docs/screenshots/stato-famiglia-decesso.png)
+
+**Registro degli accessi.** Operatore, servizio, motivazione ed esito di ogni ricerca, con il
+codice fiscale mascherato. Non contiene mai i dati restituiti da ANPR.
+
+![Registro degli accessi](docs/screenshots/log-audit.png)
+
+**Impostazioni PDND.** I segreti sono in sola scrittura (la chiave privata non viene mai
+mostrata, il `kid` solo mascherato) e il pulsante **Test** verifica l'emissione del voucher
+per ogni servizio.
+
+![Impostazioni PDND](docs/screenshots/impostazioni.png)
+
+<details>
+<summary>Accesso e gestione utenti</summary>
+
+![Accesso operatori](docs/screenshots/login.png)
+
+![Gestione utenti](docs/screenshots/utenti.png)
+
+</details>
+
 ## Come funziona
 
 ```
